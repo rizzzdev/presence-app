@@ -1,36 +1,262 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Presence
 
-## Getting Started
+Sistem pencatatan presensi dan pelanggaran siswa berbasis web. Dirancang untuk mempermudah proses monitoring kehadiran dan kedisiplinan di lingkungan sekolah secara real-time.
 
-First, run the development server:
+---
+
+## Fitur Utama
+
+- **Presensi Otomatis** — input NIS siswa via scan barcode atau ketik manual, deteksi otomatis status terlambat jika melewati batas jam 07:30 WIB
+- **Presensi Manual** — pencatatan kehadiran Sakit dan Ijin per kelas oleh guru piket
+- **Rekap Presensi Harian** — ringkasan kehadiran seluruh kelas per hari, dapat diekspor
+- **Catat Pelanggaran** — pencatatan pelanggaran siswa berdasarkan kode jenis pelanggaran dan poin
+- **Rekap Pelanggaran Harian** — riwayat pelanggaran per siswa, kelas, dan jenis pelanggaran
+- **Jadwal Piket Guru** — manajemen jadwal guru piket harian dan mingguan
+- **Manajemen Data Guru** — CRUD data guru beserta akun login
+- **Manajemen Data Murid** — CRUD data siswa beserta status dan poin pelanggaran
+- **Manajemen Session** — pantau dan revoke sesi login aktif secara real-time
+- **About Developer** — halaman profil tim pengembang
+
+---
+
+## Tech Stack
+
+### Frontend
+
+| Teknologi                     | Keterangan                                     |
+| ----------------------------- | ---------------------------------------------- |
+| [Next.js](https://nextjs.org) | Framework React untuk UI, routing, dan SSR     |
+| [Jotai](https://jotai.org)    | Global state management yang ringan dan atomic |
+
+### Backend
+
+| Teknologi                                | Keterangan                                   |
+| ---------------------------------------- | -------------------------------------------- |
+| [Express.js](https://expressjs.com)      | Framework Node.js untuk REST API             |
+| [PostgreSQL](https://www.postgresql.org) | Database relasional utama                    |
+| [Neon](https://neon.tech)                | Layanan PostgreSQL serverless berbasis cloud |
+
+---
+
+## Struktur Database
+
+```
+classes          — data kelas
+students         — data siswa (NIS, nama, status, kelas)
+teachers         — data guru (nama, gelar, hari piket)
+auths            — akun login (email, password, role)
+sessions         — sesi login aktif (token, IP, user agent)
+attendances      — data presensi harian per siswa
+attendance_daily_recaps — rekap presensi harian per kelas
+violation_types  — master jenis pelanggaran (kode, deskripsi, poin)
+violations       — data pelanggaran per siswa
+violation_daily_recaps  — rekap pelanggaran harian per kelas
+```
+
+---
+
+## Struktur Project
+
+```
+presence/
+├── frontend/                  # Next.js app
+│   ├── app/                   # App Router (Next.js 14+)
+│   │   ├── (auth)/
+│   │   │   └── login/
+│   │   ├── dashboard/
+│   │   ├── presensi/
+│   │   │   ├── otomatis/
+│   │   │   └── manual/
+│   │   ├── rekap-presensi/
+│   │   ├── pelanggaran/
+│   │   │   ├── catat/
+│   │   │   └── rekap/
+│   │   ├── jadwal-piket/
+│   │   ├── admin/
+│   │   │   ├── guru/
+│   │   │   ├── murid/
+│   │   │   └── session/
+│   │   └── about/
+│   ├── components/            # Komponen UI yang dapat digunakan ulang
+│   │   ├── layout/
+│   │   │   ├── Sidebar.tsx
+│   │   │   ├── Topbar.tsx
+│   │   │   └── BottomNav.tsx
+│   │   ├── ui/
+│   │   └── charts/
+│   ├── store/                 # Jotai atoms (global state)
+│   │   ├── authAtom.ts
+│   │   ├── sessionAtom.ts
+│   │   └── uiAtom.ts
+│   ├── lib/                   # Utilitas & API client
+│   │   ├── api.ts
+│   │   └── utils.ts
+│   └── public/
+│
+├── backend/                   # Express.js app
+│   ├── src/
+│   │   ├── routes/
+│   │   │   ├── auth.ts
+│   │   │   ├── attendance.ts
+│   │   │   ├── violation.ts
+│   │   │   ├── teacher.ts
+│   │   │   ├── student.ts
+│   │   │   └── session.ts
+│   │   ├── controllers/
+│   │   ├── middleware/
+│   │   │   ├── auth.ts        # JWT verification
+│   │   │   └── role.ts        # Role-based access (admin/user)
+│   │   ├── db/
+│   │   │   └── index.ts       # Koneksi Neon PostgreSQL
+│   │   └── index.ts           # Entry point
+│   └── prisma/
+│       └── schema.prisma      # Prisma schema
+│
+└── README.md
+```
+
+---
+
+## Cara Menjalankan
+
+### Prasyarat
+
+- Node.js >= 18
+- npm atau yarn
+- Akun [Neon](https://neon.tech) (untuk database PostgreSQL)
+
+### 1. Clone repository
+
+```bash
+git clone https://github.com/username/presence.git
+cd presence
+```
+
+### 2. Setup Backend
+
+```bash
+cd backend
+npm install
+```
+
+Buat file `.env`:
+
+```env
+DATABASE_URL=postgresql://user:password@host/presence?sslmode=require
+JWT_SECRET=your_jwt_secret_key
+PORT=5000
+```
+
+Jalankan migrasi database:
+
+```bash
+npx prisma migrate dev
+npx prisma generate
+```
+
+Jalankan server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Backend berjalan di `http://localhost:5000`
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+### 3. Setup Frontend
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+cd frontend
+npm install
+```
 
-## Learn More
+Buat file `.env.local`:
 
-To learn more about Next.js, take a look at the following resources:
+```env
+NEXT_PUBLIC_API_URL=http://localhost:5000/api
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Jalankan aplikasi:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+npm run dev
+```
 
-## Deploy on Vercel
+Frontend berjalan di `http://localhost:3000`
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Autentikasi & Otorisasi
+
+Sistem menggunakan **JWT (JSON Web Token)** untuk autentikasi. Terdapat dua role:
+
+| Role    | Akses                                                     |
+| ------- | --------------------------------------------------------- |
+| `ADMIN` | Seluruh fitur termasuk manajemen guru, murid, dan session |
+| `USER`  | Presensi, rekap, pelanggaran, jadwal piket                |
+
+Token disimpan di Jotai atom dan di-persist ke `localStorage` pada sisi frontend.
+
+---
+
+## API Endpoints
+
+### Auth
+
+```
+POST   /api/auth/login          Login dan mendapatkan token
+POST   /api/auth/logout         Logout dan hapus session
+GET    /api/auth/me             Data user yang sedang login
+```
+
+### Presensi
+
+```
+POST   /api/attendance          Catat presensi (otomatis)
+PUT    /api/attendance          Update presensi (manual: sakit/ijin)
+GET    /api/attendance/recap    Rekap presensi harian
+```
+
+### Pelanggaran
+
+```
+GET    /api/violations          Daftar pelanggaran
+POST   /api/violations          Catat pelanggaran baru
+GET    /api/violations/recap    Rekap pelanggaran harian
+GET    /api/violation-types     Daftar jenis pelanggaran
+```
+
+### Manajemen (Admin only)
+
+```
+GET    /api/teachers            Daftar guru
+POST   /api/teachers            Tambah guru
+PUT    /api/teachers/:id        Update data guru
+DELETE /api/teachers/:id        Hapus guru
+
+GET    /api/students            Daftar murid
+POST   /api/students            Tambah murid
+PUT    /api/students/:id        Update data murid
+DELETE /api/students/:id        Hapus murid
+
+GET    /api/sessions            Daftar session aktif
+DELETE /api/sessions/:id        Revoke session tertentu
+DELETE /api/sessions            Revoke semua session
+```
+
+---
+
+## Tim Pengembang
+
+| Nama                     | Role                              |
+| ------------------------ | --------------------------------- |
+| Vinzent Robertho Rumere  | Project Lead & Frontend Developer |
+| Andhika Wicaksana        | Frontend Developer                |
+| Marcellino Melvin Willis | Frontend Developer                |
+| Santiago Tan             | Frontend Developer                |
+| Rizqon Maulana           | Backend Developer                 |
+
+---
+
+## Lisensi
+
+Project ini dibuat untuk keperluan akademik di **SMA Bagimu Negeriku Semarang** — Tahun Ajaran 2025/2026.
