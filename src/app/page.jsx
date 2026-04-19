@@ -1,7 +1,5 @@
 "use client";
 
-import Sidebar from "~/components/layout/sidebar";
-import Topbar from "~/components/layout/topbar";
 import Wrapper from "~/components/layout/wrapper";
 import StatsCard from "~/components/ui/stats-card";
 import StatsCardDashboard from "~/components/ui/stats-card-dashboard";
@@ -12,7 +10,7 @@ export default function Home() {
       <h3 className="w-full flex flex-col justify-center items-center text-white">
         Hello
       </h3>
-      <div className="w-full grid grid-cols-2 md:grid-cols-4 justify-center items-center gap-2">
+      <div className="w-full grid grid-cols-2 md:grid-cols-4 justify-center items-stretch gap-2">
         <StatsCardDashboard
           title="Jumlah Siswa"
           value="100"

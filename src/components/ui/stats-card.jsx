@@ -10,7 +10,7 @@ const StatsCard = (props) => {
 
   return (
     <div
-      className={`w-full p-6 rounded-lg flex flex-col justify-between items-center gap-1 ${colors[color]}`}
+      className={`w-full h-full p-6 rounded-lg flex flex-col justify-between items-center gap-1 ${colors[color]}`}
     >
       <h3 className="text-2xl font-bold">{value}</h3>
       <p className="text-[10px] text-white/60">{title}</p>

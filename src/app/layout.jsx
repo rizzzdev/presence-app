@@ -1,7 +1,7 @@
 import { Poppins } from "next/font/google";
 import "./globals.css";
 import Logo from "~/components/ui/logo";
-import Sidebar from "~/components/layout/sidebar";
+import Toast from "~/components/ui/toast";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -20,8 +20,8 @@ export default function RootLayout({ children }) {
       lang="en"
       className={`${poppins.variable} ${poppins.className} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-main">
-        <Sidebar />
+      <body className="min-h-full flex flex-col">
+        <Toast />
         {children}
       </body>
     </html>

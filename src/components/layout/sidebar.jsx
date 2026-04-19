@@ -12,14 +12,13 @@ const Sidebar = () => {
 
   return (
     <aside
-      className={`w-56 h-screen flex flex-col justify-between items-start bg-sidebar fixed top-0 left-0 border-r border-r-white/10 z-99 ${isHamburgerOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0 transition-all duration-500`}
+      className={`w-56 h-screen flex flex-col justify-between items-start bg-sidebar fixed top-0 left-0 border-r border-r-white/10 z-99 ${isHamburgerOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0 transition-all duration-500 bg-sidebar`}
     >
-      <div className="w-full flex flex-col justify-center items-center">
+      <div className="w-full h-full flex flex-col justify-center items-center">
         <Logo />
         <UserSessionCard name="John Doe" role="Admin" />
         <Menu />
       </div>
-      <LogoutButton />
     </aside>
   );
 };

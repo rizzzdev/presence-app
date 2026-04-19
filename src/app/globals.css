@@ -18,3 +18,205 @@
 body {
   font-family: var(--font-poppins);
 }
+
+/* HTML: <div class="loader"></div> */
+.loader {
+  width: 120px;
+  height: 22px;
+  border-radius: 20px;
+  color: #ff8c00;
+  border: 2px solid;
+  position: relative;
+}
+.loader::before {
+  content: "";
+  position: absolute;
+  margin: 2px;
+  inset: 0 100% 0 0;
+  border-radius: inherit;
+  background: currentColor;
+  animation: l6 2s infinite;
+}
+@keyframes l6 {
+  100% {
+    inset: 0;
+  }
+}
+
+/* ════════════════════════════════════════
+   SCROLLBAR GLOBAL
+   ════════════════════════════════════════ */
+@layer base {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 140, 0, 0.35) rgba(10, 22, 40, 0.6);
+  }
+
+  *::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
+
+  *::-webkit-scrollbar-track {
+    background: rgba(10, 22, 40, 0.6);
+    border-radius: 10px;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background: rgba(255, 140, 0, 0.35);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 140, 0, 0.1);
+  }
+
+  *::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 140, 0, 0.65);
+  }
+
+  *::-webkit-scrollbar-thumb:active {
+    background: #ff8c00;
+  }
+
+  *::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+}
+
+.scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 140, 0, 0.25) transparent;
+
+  &::-webkit-scrollbar {
+    width: 3px;
+    height: 3px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: rgba(255, 140, 0, 0.25);
+    border-radius: 999px;
+    border: none;
+  }
+  &::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 140, 0, 0.5);
+  }
+  &::-webkit-scrollbar-thumb:active {
+    background: #ff8c00;
+  }
+}
+
+.scrollbar-none {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Auto-hide — hanya muncul saat hover */
+.scrollbar-autohide {
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
+  &::-webkit-scrollbar-track {
+    background: rgba(10, 22, 40, 0.6);
+    border-radius: 10px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: transparent;
+    border-radius: 10px;
+    transition: background 0.25s ease;
+  }
+
+  &:hover {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 140, 0, 0.35) rgba(10, 22, 40, 0.6);
+  }
+  &:hover::-webkit-scrollbar-thumb {
+    background: rgba(255, 140, 0, 0.35);
+  }
+  &:hover::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 140, 0, 0.65);
+  }
+  &:hover::-webkit-scrollbar-thumb:active {
+    background: #ff8c00;
+  }
+}
+
+/* Main — menggunakan warna --main sebagai track */
+.scrollbar-main {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 140, 0, 0.35) #0f1f3d;
+
+  &::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+  &::-webkit-scrollbar-track {
+    background: #0f1f3d;
+    border-radius: 10px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: rgba(255, 140, 0, 0.4);
+    border-radius: 10px;
+  }
+  &::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 140, 0, 0.7);
+  }
+  &::-webkit-scrollbar-thumb:active {
+    background: #ff8c00;
+  }
+}
+
+/* Sidebar — menggunakan warna --sidebar sebagai track */
+.scrollbar-sidebar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 140, 0, 0.25) #0a1628;
+
+  &::-webkit-scrollbar {
+    width: 3px;
+    height: 3px;
+  }
+  &::-webkit-scrollbar-track {
+    background: #0a1628;
+    border-radius: 10px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: rgba(255, 140, 0, 0.25);
+    border-radius: 10px;
+  }
+  &::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 140, 0, 0.5);
+  }
+  &::-webkit-scrollbar-thumb:active {
+    background: #ff8c00;
+  }
+}
+
+/* Horizontal — tabel overflow-x */
+.scrollbar-x {
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 140, 0, 0.3) #0f1f3d;
+
+  &::-webkit-scrollbar {
+    height: 4px;
+  }
+  &::-webkit-scrollbar-track {
+    background: #0f1f3d;
+    border-radius: 10px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: rgba(255, 140, 0, 0.3);
+    border-radius: 10px;
+  }
+  &::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 140, 0, 0.65);
+  }
+  &::-webkit-scrollbar-thumb:active {
+    background: #ff8c00;
+  }
+}

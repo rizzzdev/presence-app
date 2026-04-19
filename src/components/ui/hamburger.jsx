@@ -11,17 +11,17 @@ const Hamburger = () => {
 
   return (
     <div
-      className="flex w-6 h-6 flex-col justify-center items-center gap-1 cursor-pointer md:hidden"
+      className="flex w-6 h-6 flex-col justify-center items-center gap-2 cursor-pointer md:hidden"
       onClick={handleClick}
     >
       <span
-        className={`w-full h-0.5 bg-text rounded-lg ${isHamburgerOpen && "rotate-45 translate-y-1"} transition-all duration-500`}
+        className={`w-full h-0.5 bg-text rounded-lg ${isHamburgerOpen && "rotate-45 translate-y-2.5"} transition-all duration-500`}
       ></span>
       <span
         className={`w-full h-0.5 bg-text rounded-lg  ${isHamburgerOpen && "translate-x-full invisible"} transition-all duration-200`}
       ></span>
       <span
-        className={`w-full h-0.5 bg-text rounded-lg  ${isHamburgerOpen && "-rotate-45 -translate-y-2"} transition-all duration-500`}
+        className={`w-full h-0.5 bg-text rounded-lg  ${isHamburgerOpen && "-rotate-45 -translate-y-2.5"} transition-all duration-500`}
       ></span>
     </div>
   );
