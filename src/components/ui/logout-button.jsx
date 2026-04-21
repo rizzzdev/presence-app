@@ -4,20 +4,22 @@ import { useAtomValue, useSetAtom } from "jotai";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { IoLogOutOutline } from "react-icons/io5";
-import { meStateAtom } from "~/features/login/stores/me-store";
-import { deleteSessionById } from "~/features/session/api/session-api";
+import { meAtom } from "~/features/login/stores/me-store";
 import { toastsAtom } from "./toast";
+import { useLogout } from "~/features/session/hooks/use-logout";
 
 const LogoutButton = () => {
   const [disabled, setDisabled] = useState(false);
   const setToasts = useSetAtom(toastsAtom);
-  const { session, accessToken } = useAtomValue(meStateAtom);
+  const { mySession } = useAtomValue(meAtom);
+  const { id } = mySession;
+  const { logout } = useLogout();
   const router = useRouter();
 
   const onClick = async () => {
     setDisabled(true);
 
-    const response = await deleteSessionById(session.id, accessToken);
+    const response = await logout(id);
 
     if (response.error) {
       setToasts((prev) => [
@@ -27,15 +29,12 @@ const LogoutButton = () => {
     }
 
     if (!response.error) {
-      localStorage.removeItem("access-token");
       setToasts((prev) => [
         ...prev,
         { type: "success", message: "Logout berhasil" },
       ]);
 
-      setTimeout(() => {
-        router.push("/login");
-      }, 3000);
+      router.replace("/login");
     }
   };
 

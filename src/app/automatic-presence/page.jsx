@@ -1,42 +1,20 @@
 "use client";
 
-import { useAtom } from "jotai";
 import Wrapper from "~/components/layout/wrapper";
-import { Button } from "~/components/ui/form";
 import Loading from "~/components/ui/loading";
 import StatsCard from "~/components/ui/stats-card";
 import StatsCardDashboard from "~/components/ui/stats-card-dashboard";
-import useApi from "~/features/session/hooks/use-api";
 import { useAuth } from "~/features/session/hooks/use-auth";
-import { teachersAtom } from "~/features/teacher/stores/teacher-store";
 
 export default function Home() {
   const { isLoading } = useAuth();
-
-  const [teachers, setTeachers] = useAtom(teachersAtom);
-
-  const { execute } = useApi("/teachers", {
-    params: {
-      includeAll: "true",
-    },
-  });
-
-  const handleClick = async () => {
-    const response = await execute();
-
-    if (!response?.error && response?.data) {
-      setTeachers(response?.data);
-      return;
-    }
-    setTeachers([]);
-  };
 
   if (isLoading) {
     return <Loading />;
   }
 
   return (
-    <Wrapper topbarTitle="Dashboard" topbarDescription="Selamat Datang">
+    <Wrapper topbarTitle="Presensi Otomatis" topbarDescription="Selamat Datang">
       <h3 className="w-full flex flex-col justify-center items-center text-white">
         Hello
       </h3>
@@ -67,16 +45,6 @@ export default function Home() {
         <StatsCard title="Hadir" value="33" />
         <StatsCard title="Terlambat" value="12" color="yellow" />
         <StatsCard title="Belum Hadir" value="5" color="red" />
-      </div>
-      <Button onClick={handleClick}>Summon Guru</Button>
-      <div className="w-full flex flex-col">
-        {teachers.map((teacher) => {
-          return (
-            <p key={teacher.id} className="text-white/80 text-xs">
-              {teacher.name}
-            </p>
-          );
-        })}
       </div>
     </Wrapper>
   );

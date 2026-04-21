@@ -1,10 +1,9 @@
 import { useSetAtom } from "jotai";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Form, { Button, Input } from "~/components/ui/form";
 import { toastsAtom } from "~/components/ui/toast";
-import { postSession } from "~/features/session/api/session-api";
+import { useLogin } from "~/features/session/hooks/use-login";
 
 const LoginForm = () => {
   const [loginData, setLoginData] = useState({
@@ -14,43 +13,29 @@ const LoginForm = () => {
   });
   const { email, password, isDisabled } = loginData;
   const setToasts = useSetAtom(toastsAtom);
-  const router = useRouter();
+  const { login } = useLogin();
 
   const handleSubmit = async () => {
-    setLoginData((prev) => ({ ...prev, isDisabled: true }));
+    const response = await login(email, password);
 
-    const response = await postSession({
-      email,
-      password,
-    });
+    setLoginData((prev) => ({ ...prev, isDisabled: true }));
 
     if (response.error) {
       setToasts((prev) => [
         ...prev,
-        {
-          type: "error",
-          message: response.message,
-        },
+        { type: "error", message: response.error },
       ]);
 
       setLoginData((prev) => ({ ...prev, isDisabled: false }));
-      return;
     }
 
     if (!response.error) {
-      localStorage.setItem("access-token", response.data.accessToken);
       setToasts((prev) => [
         ...prev,
-        {
-          type: "success",
-          message:
-            "Login sukses, akan diarahkan ke halaman utama dalam beberapa saat.",
-        },
+        { type: "success", message: "Login berhasil" },
       ]);
 
-      setTimeout(() => {
-        router.push("/");
-      }, 3000);
+      window.location.href = "/";
     }
   };
 

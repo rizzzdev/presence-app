@@ -1,7 +1,9 @@
+"use client";
+
 import Logo from "~/components/ui/logo";
 import LoginForm from "../components/login-form";
-import useLogin from "../hooks/use-login";
 import Loading from "~/components/ui/loading";
+import { useEffect, useState } from "react";
 
 const LoginCard = () => {
   return (
@@ -21,11 +23,15 @@ const LoginCard = () => {
 };
 
 const LoginPage = () => {
-  const { isLoading } = useLogin();
+  const [isRendered, setIsRendered] = useState(false);
 
-  if (isLoading) {
-    return <Loading />;
-  }
+  useEffect(() => {
+    setTimeout(() => {
+      setIsRendered(true);
+    }, 500);
+  }, [setIsRendered]);
+
+  if (!isRendered) return <Loading />;
 
   return (
     <div className="w-full h-screen flex justify-center items-center bg-primary p-2 bg-sidebar">

@@ -1,8 +1,17 @@
 import { useAtomValue } from "jotai";
-import { meStateAtom } from "~/features/login/stores/me-store";
+import {
+  meAtom,
+  mySessionAtom,
+  myTeacherAtom,
+} from "~/features/login/stores/me-store";
 
-const UserInfo = (props) => {
-  const { name, role } = props;
+const UserInfo = () => {
+  // const session = useAtomValue(mySessionAtom);
+  // const teacher = useAtomValue(myTeacherAtom);
+  const { mySession: session, myTeacher: teacher } = useAtomValue(meAtom);
+
+  const name = teacher?.name ? teacher?.name : "Super Admin";
+  const role = session?.auth?.role === "USER" ? "Guru" : "Super Admin";
 
   return (
     <div className="w-full flex flex-col justify-center items-start text-[10px] text-white/40">
@@ -13,12 +22,13 @@ const UserInfo = (props) => {
 };
 
 const ActiveSession = () => {
-  const { session } = useAtomValue(meStateAtom);
+  // const session = useAtomValue(mySessionAtom);
+  const { mySession: session } = useAtomValue(meAtom);
   const loginTimeString = session?.createdAt;
   const loginTime = new Date(loginTimeString);
   const loginTimeWib = new Date(loginTime.getTime() + 7 * 60 * 60 * 1000);
-  const hours = loginTimeWib.getUTCHours();
-  const minutes = loginTimeWib.getUTCMinutes();
+  const hours = loginTimeWib.getUTCHours().toString();
+  const minutes = loginTimeWib.getUTCMinutes().toString();
 
   return (
     <div className="w-full flex justify-between gap-4 items-center text-[10px] text-white/40">
@@ -27,15 +37,15 @@ const ActiveSession = () => {
         <p className="">Sesi Aktif</p>
       </div>
       <p className="w-full text-right">
-        Login {hours}:{minutes}
+        Login {hours}:{minutes.length === 1 ? `0${minutes}` : `${minutes}`}
       </p>
     </div>
   );
 };
 
-const UserSessionCard = (props) => {
-  const { name, role } = props;
-  const { session, teacher } = useAtomValue(meStateAtom);
+const UserSessionCard = () => {
+  // const teacher = useAtomValue(myTeacherAtom);
+  const { myTeacher: teacher } = useAtomValue(meAtom);
 
   return (
     <div className="w-full flex justify-center items-center p-2 border-b border-b-white/10">
@@ -51,10 +61,7 @@ const UserSessionCard = (props) => {
                   ?.toUpperCase()
               : "ADM"}
           </span>
-          <UserInfo
-            name={teacher?.name ? teacher?.name : "Super Admin"}
-            role={session?.auth?.role === "USER" ? "Guru" : "Super Admin"}
-          />
+          <UserInfo />
         </div>
         <ActiveSession />
       </div>

@@ -21,5 +21,5 @@ export const initialTeacher = {
   deletedAt: null,
 };
 
-export const teacherStateAtom = atom({ ...initialTeacher, auth: initialAuth });
-export const teachersStateAtom = atom([]);
+export const teacherAtom = atom({ ...initialTeacher, auth: initialAuth });
+export const teachersAtom = atom([]);
