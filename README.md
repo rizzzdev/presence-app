@@ -1,6 +1,6 @@
 # Presence
 
-Sistem pencatatan presensi dan pelanggaran siswa berbasis web. Dirancang untuk mempermudah proses monitoring kehadiran dan kedisiplinan di lingkungan sekolah secara real-time.
+Sistem pencatatan presensi dan pelanggaran siswa berbasis web. Dirancang untuk mempermudah proses monitoring kehadiran dan kedisiplinan siswa di lingkungan sekolah secara real-time.
 
 ---
 
