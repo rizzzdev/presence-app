@@ -16,7 +16,7 @@ const Sidebar = () => {
     >
       <div className="w-full h-full flex flex-col justify-center items-center">
         <Logo />
-        <UserSessionCard name="John Doe" role="Admin" />
+        <UserSessionCard />
         <Menu />
       </div>
     </aside>
