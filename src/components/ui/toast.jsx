@@ -1,11 +1,9 @@
 "use client";
 
-import { atom, useAtom, useAtomValue } from "jotai";
+import { atom, useAtom } from "jotai";
 import { useEffect, useState } from "react";
 import { BsExclamationSquare } from "react-icons/bs";
-import { CiSquareInfo } from "react-icons/ci";
 import { FaCheckCircle } from "react-icons/fa";
-import { MdDashboard } from "react-icons/md";
 
 const ToastType = (props) => {
   const { type = "info", message = "Hello World" } = props;
@@ -60,7 +58,7 @@ const Toast = () => {
   }
 
   return (
-    <div className="w-full md:min-w-72 md:w-fit flex flex-col justify-end items-center gap-2 p-2 absolute right-0 bottom-0">
+    <div className="w-full md:min-w-72 md:w-fit flex flex-col justify-end items-center gap-2 p-2 absolute right-0 bottom-0 z-9000">
       {toasts.map((toast, index) => {
         return (
           <ToastType key={index} type={toast.type} message={toast.message} />

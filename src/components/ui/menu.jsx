@@ -11,6 +11,12 @@ import { LuTarget } from "react-icons/lu";
 import { MdDashboard, MdLibraryBooks } from "react-icons/md";
 import { RiCalendarScheduleFill } from "react-icons/ri";
 import LogoutButton from "./logout-button";
+import { useAtomValue } from "jotai";
+import { meAtom } from "~/features/login/stores/me-store";
+import { GiTeacher } from "react-icons/gi";
+import { PiStudentBold } from "react-icons/pi";
+import { SiGoogleclassroom } from "react-icons/si";
+import { VscEditSession } from "react-icons/vsc";
 
 const MenuList = (props) => {
   const { href, Icon, title } = props;
@@ -46,6 +52,10 @@ const MenuWrapper = (props) => {
 };
 
 const Menu = () => {
+  const { mySession } = useAtomValue(meAtom);
+
+  console.log(mySession);
+
   return (
     <div className="w-full h-full flex flex-col justify-between items-center mt-2 gap-4 overflow-y-auto scrollbar-thin relative">
       <div className="w-full flex flex-col justify-start items-center gap-2">
@@ -81,6 +91,22 @@ const Menu = () => {
             Icon={MdLibraryBooks}
           />
         </MenuWrapper>
+        {mySession?.auth?.role === "ADMIN" && (
+          <MenuWrapper title="ADMIN">
+            <MenuList href="/teacher" title="Data Guru" Icon={GiTeacher} />
+            <MenuList href="/student" title="Data Siswa" Icon={PiStudentBold} />
+            <MenuList
+              href="/class"
+              title="Data Kelas"
+              Icon={SiGoogleclassroom}
+            />
+            <MenuList
+              href="/session"
+              title="Data Session"
+              Icon={VscEditSession}
+            />
+          </MenuWrapper>
+        )}
         <MenuWrapper title="LAINNYA">
           <MenuList
             href="/picket-schedule"
