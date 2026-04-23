@@ -54,8 +54,6 @@ const MenuWrapper = (props) => {
 const Menu = () => {
   const { mySession } = useAtomValue(meAtom);
 
-  console.log(mySession);
-
   return (
     <div className="w-full h-full flex flex-col justify-between items-center mt-2 gap-4 overflow-y-auto scrollbar-thin relative">
       <div className="w-full flex flex-col justify-start items-center gap-2">

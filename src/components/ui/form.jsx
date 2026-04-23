@@ -50,6 +50,80 @@ export const Input = (props) => {
   );
 };
 
+export const Date = (props) => {
+  const { htmlFor, label, value, setValue } = props;
+  const [isFocused, setIsFocused] = useState(false);
+
+  return (
+    <div className="w-full flex flex-col justify-center items-start text-xs text-white/60 ">
+      <label htmlFor={htmlFor}>{label}</label>
+      <div
+        className={`w-full flex gap-2 justify-between items-center border ${isFocused ? "border-accent/80" : "border-white/10"} rounded-lg p-2`}
+      >
+        <input
+          type="date"
+          autoComplete="off"
+          id={htmlFor}
+          className="w-full outline-none"
+          value={value}
+          onChange={(event) => setValue(event.target.value)}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
+        />
+      </div>
+    </div>
+  );
+};
+
+export const Dropdown = (props) => {
+  const {
+    htmlFor,
+    label,
+    setValue,
+    options = [],
+    placeholder = "Select here",
+  } = props;
+  const [isFocused, setIsFocused] = useState(false);
+
+  const availableOptions = [
+    {
+      value: "",
+      text: `-- ${placeholder} --`,
+    },
+    ...options,
+  ];
+
+  return (
+    <div className="w-full flex flex-col justify-center items-start text-xs text-white/60 ">
+      <label htmlFor={htmlFor}>{label}</label>
+      <div
+        className={`w-full flex gap-2 justify-between items-center border ${isFocused ? "border-accent/80" : "border-white/10"} rounded-lg p-2`}
+      >
+        <select
+          type="date"
+          autoComplete="off"
+          id={htmlFor}
+          className="w-full outline-none"
+          // value={options[0].text}
+          onChange={(event) => setValue(event.target.value)}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
+        >
+          {availableOptions.map((option, index) => (
+            <option
+              key={index}
+              value={option.value}
+              className="bg-main p-1 text-text"
+            >
+              {option.text}
+            </option>
+          ))}
+        </select>
+      </div>
+    </div>
+  );
+};
+
 export const Button = (props) => {
   const {
     children,
